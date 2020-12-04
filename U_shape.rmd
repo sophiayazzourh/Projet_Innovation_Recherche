@@ -1,0 +1,33 @@
+---
+title: "U_shape"
+output: html_document
+---
+
+```{r}
+data <- read.xlsx("Base_PBM_Facteurs_Confusion.xlsx")
+data
+```
+
+```{r}
+# mettre les valeurs à 1
+data[,22][data[,22]>0]=1
+# supprimer les NA
+library(tidyr)
+data = data %>% drop_na()
+
+data_conf <- data[,1:19]
+data_conf
+```
+
+```{r}
+Y <- data[,22]
+
+# Selection
+library("MASS")
+mod <- glm(Y ~., family=binomial, data_conf)
+stepAIC(mod, direction = "both")
+```
+```{r}
+length(Y)
+```
+
